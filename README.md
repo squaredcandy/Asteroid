@@ -1,3 +1,3 @@
 # Asteroid
 
-An NFC Tag Read/Writter
+An NFC Tag handler for IoT devices
