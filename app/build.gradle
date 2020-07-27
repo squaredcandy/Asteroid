@@ -1,0 +1,119 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.protobuf'
+
+android {
+    buildToolsVersion versions.android_build_tools
+    compileSdkVersion versions.compile_sdk
+
+    defaultConfig {
+        applicationId "com.squaredcandy.asteroid"
+        minSdkVersion versions.min_sdk
+        targetSdkVersion versions.compile_sdk
+        versionCode 1
+        versionName "0.0.1"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        viewBinding = false
+        dataBinding = false
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/proto"
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile).all {
+    kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"]
+    kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.FlowPreview"]
+    kotlinOptions.freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.InternalCoroutinesApi"]
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
+
+    implementation "com.github.squaredcandy:Dust:0.1"
+
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swiperefreshlayout}"
+    implementation "androidx.recyclerview:recyclerview:${versions.recyclerview}"
+    implementation "androidx.room:room-runtime:${versions.room}"
+    implementation "androidx.room:room-ktx:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
+
+    implementation "com.google.android.material:material:${versions.material}"
+
+    implementation "com.bluelinelabs:conductor:${versions.conductor}"
+
+    implementation "org.koin:koin-core:${versions.koin}"
+    implementation "org.koin:koin-androidx-scope:${versions.koin}"
+    testImplementation "org.koin:koin-test:${versions.koin}"
+
+//    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+//    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
+
+    implementation "javax.annotation:javax.annotation-api:${versions.javax}"
+    implementation "io.grpc:grpc-okhttp:${versions.grpc}"
+    implementation "io.grpc:grpc-protobuf-lite:${versions.grpc}"
+    implementation "io.grpc:grpc-stub:${versions.grpc}"
+    implementation "com.github.marcoferrer.krotoplus:kroto-plus-coroutines:${versions.kroto}"
+
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
+    testImplementation "androidx.room:room-testing:${versions.room}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+}
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:${versions.protobuf}" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:${versions.grpc}" }
+        kroto {
+            artifact = "com.github.marcoferrer.krotoplus:protoc-gen-kroto-plus:${versions.kroto}"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.inputs.files "app\\krotoPlusConfig.yaml"
+            task.builtins {
+                java { option 'lite' }
+            }
+            task.plugins {
+                grpc {
+                    outputSubDir = "java"
+                    option 'lite'
+                }
+                kroto {
+                    outputSubDir = "java"
+                    option "ConfigPath=app\\krotoPlusConfig.yaml"
+                }
+            }
+        }
+    }
+}
