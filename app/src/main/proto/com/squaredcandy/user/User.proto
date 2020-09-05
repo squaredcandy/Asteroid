@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package squaredcandy.v1.user;
+
+option java_package = "com.squaredcandy.proto.v1.user.user";
+option java_outer_classname = "UserProto";
+
+message User {
+  string user_id = 1;
+  string username = 2;
+  repeated string controlled_device_ids = 3;
+}
+
+message GetUserRequest {
+  string jwt_token = 1;
+  string user_id = 2;
+}
+
+message GetUserReply {
+  User user = 1;
+}
+
+service ControlUser {
+  /**
+   * Get the details of another user
+   */
+  rpc GetOtherUser (GetUserRequest) returns (GetUserReply) {}
+}

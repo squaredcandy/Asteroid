@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package squaredcandy.v1.device.smart.light;
+
+option java_package = "com.squaredcandy.proto.v1.device.smart.light";
+option java_outer_classname = "SmartLightsProto";
+
+message UpdateSmartLightStateRequest {
+
+}
+message UpdateSmartLightResponse {
+
+}
+
+message CommandSmartLightRequest {
+  bool isOn = 1;
+  uint32 brightness = 2;
+  uint32 temperature = 3;
+}
+
+message CommandSmartLightResponse {
+
+}
+
+message GetLightStateRequest {
+	string userId = 1;
+	oneof deviceId {
+		string mac = 2;
+		string name = 3;
+		string ip = 4;
+	}
+}
+
+message GetLightStateResponse {
+	string name = 1;
+	string mac = 2;
+	bool isOn = 3;
+	string ip = 4;
+	LightColorHSB color = 5;
+}
+
+message LightColorHSB {
+	float hue = 1;
+	float brightness = 2;
+	float saturation = 3;
+	float kelvin = 4; // Nullable
+}
+
+service ControlSmartLight {
+//   rpc UpdateState(UpdateSmartLightStateRequest) returns (UpdateSmartLightResponse) {}
+	rpc GetLightState (GetLightStateRequest) returns (stream GetLightStateResponse);
+}

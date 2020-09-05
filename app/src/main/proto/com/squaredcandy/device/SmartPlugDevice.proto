@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+package squaredcandy.v1.device.smart.plug;
+
+option java_package = "com.squaredcandy.proto.v1.device.smart.plug";
+option java_outer_classname = "SmartPlugProto";

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Asteroid</string>
+
+    <string name="grpc_host_address">192.168.1.70</string>
+    <integer name="grpc_port">80</integer>
+
+    <string name="main_no_wifi">You are not connected to WIFI</string>
+    <string name="main_no_server_connection">You are not connected to the server</string>
+    <string name="main_open_wifi_settings">Open WIFI Settings</string>
+    <string name="main_reconnect">Reconnect</string>
 </resources>

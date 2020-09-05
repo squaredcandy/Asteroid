@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "com/squaredcandy/device/Device.proto";
+
+package squaredcandy.v1.device.authentication;
+
+option java_package = "com.squaredcandy.proto.v1.device.authentication";
+option java_outer_classname = "DeviceAuthenticationProto";
+
+message RegisterDeviceRequest {
+  string mac_address = 1;
+  string name = 2;
+  DeviceType type = 3;
+  string ip_address = 4;
+}
+
+message RegisterDeviceReply {
+  string uuid = 1;
+}
+
+service AuthenticateDevice {
+  rpc Register (RegisterDeviceRequest) returns (RegisterDeviceReply) {}
+}

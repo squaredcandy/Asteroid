@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+import "com/squaredcandy/user/User.proto";
+import "google/protobuf/timestamp.proto";
+
+package squaredcandy.v1.user.authentication;
+
+option java_package = "com.squaredcandy.proto.v1.user.authentication";
+option java_outer_classname = "UserAuthenticationProto";
+
+message LoginUserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginUserReply {
+  /**
+   * Authorization token to use when calling network requests
+   */
+  string auth_token = 1;
+  /**
+   * Refresh token to use the [auth_token] expires
+   */
+  string refresh_token = 2;
+  /**
+   * [auth_token} expiry date
+   */
+  google.protobuf.Timestamp expiry_date = 3;
+  User user = 4;
+}
+
+message RefreshUserLoginRequest {
+  string auth_token = 1;
+  string refresh_token = 2;
+}
+
+/**
+ * See [LoginUserReply] for explanation
+ */
+message RefreshUserLoginReply {
+  string auth_token = 1;
+  string refresh_token = 2;
+  google.protobuf.Timestamp expiry_date = 3;
+}
+
+message RegisterUserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message RegisterUserReply {
+  bool success = 1;
+}
+
+service AuthenticateUser {
+  /**
+   * Logs in a user
+   */
+  rpc Login (LoginUserRequest) returns (LoginUserReply) {}
+  /**
+   * Refresh a user's login
+   */
+  rpc Refresh (RefreshUserLoginRequest) returns (RefreshUserLoginReply) {}
+  /**
+   * Registers a user into the database
+   */
+  rpc Register (RegisterUserRequest) returns (RegisterUserReply) {}
+}
