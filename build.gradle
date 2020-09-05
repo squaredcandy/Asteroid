@@ -15,7 +15,6 @@ buildscript {
             'swiperefreshlayout'    : '1.2.0-alpha01',
             'recyclerview'          : '1.2.0-alpha05',
             'room'                  : '2.2.5',
-            'conductor'             : '3.0.0-rc6',
             'timber'                : '4.7.1',
             'protobuf_gradle'       : '0.8.12',
             'protobuf'              : '3.12.3',
