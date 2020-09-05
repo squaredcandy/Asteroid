@@ -1,9 +1,7 @@
 package com.squaredcandy.asteroid.util
 
-import com.bluelinelabs.conductor.Controller
-import com.squaredcandy.asteroid.main.MainController
-import com.squaredcandy.dust.conductor.RouterActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.squaredcandy.asteroid.R
 
-class MainActivity : RouterActivity() {
-    override val controller: Controller = MainController()
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 }
